@@ -27,7 +27,7 @@ for (const monitor of ddcci.getMonitorList()) {
 * ### `getBrightness(monitorName)`
   Queries a monitor's contrast level.
   * #### Parameters
-    * **`monitorName`** 
+    * **`monitorName`**  
       `String`. Name of monitor for which to query the brightness.
   * #### Return value
     An `integer` between 0-100 representing the current brightness.
@@ -35,15 +35,15 @@ for (const monitor of ddcci.getMonitorList()) {
 * ### `setBrightness(monitorName, level)`
   Sets a monitor's brightness level.
   * #### Parameters
-    * **`monitorName`**
+    * **`monitorName`**  
       &emsp;`String`. Name of monitor for which to set the brightness.
-    * **`level`**
+    * **`level`**  
       &emsp;`integer`. Between between 0-100 representing the new brightness level.
 
 * ### `getContrast(monitorName)`
   Queries a monitor's contrast level.
   * #### Parameters
-    * **`monitorName`** 
+    * **`monitorName`**  
       `String`. Name of monitor for which to query the contrast.
   * #### Return value
     An `integer` between 0-100 representing the current contrast.
@@ -51,27 +51,27 @@ for (const monitor of ddcci.getMonitorList()) {
 * ### `setContrast(monitorName, level)`
   Sets a monitor's contrast level.
   * #### Parameters
-    * **`monitorName`**
+    * **`monitorName`**  
       &emsp;`String`. Name of monitor for which to set the contrast.
-    * **`level`**
+    * **`level`**  
       &emsp;`integer`. Between between 0-100 representing the new contrast level.
 
 * ### `_getVCP(monitorName, vcpCode)`
   Queries a monitor for a VCP code value.
   * #### Parameters
-    * **`monitorName`**
+    * **`monitorName`**  
       &emsp;`String`. Name of monitor for which to query the VCP feature.
-    * **`vcpCode`**
+    * **`vcpCode`**  
       &emsp;`integer`. VCP code to query
 
 * ### `_setVCP(monitorName, vcpCode, value)`
   Sets the value of a VCP code for a monitor.
   * #### Parameters
-    * **`monitorName`**
+    * **`monitorName`**  
       &emsp;`String`. Name of monitor for which to set the VCP feature.
-    * **`vcpCode`**
+    * **`vcpCode`**  
       &emsp;`integer`. VCP code to set.
-    * **`value`**
+    * **`value`**  
       &emsp;`integer`. Value of the VCP code.
 
 * ### `_refresh()`
