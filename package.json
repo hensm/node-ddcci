@@ -6,7 +6,7 @@
   "author": "Matt Hensman <@matt.tf>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/hensm/node-ddcci/issues",
+    "url": "https://github.com/hensm/node-ddcci/issues"
   },
   "repository": "github:hensm/node-ddcci",
   "dependencies": {
