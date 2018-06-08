@@ -28,7 +28,7 @@ for (const monitor of ddcci.getMonitorList()) {
   Queries a monitor's contrast level.
   * #### Parameters
     * **`monitorName`**  
-      `String`. Name of monitor for which to query the brightness.
+      &emsp;`String`. Name of monitor for which to query the brightness.
   * #### Return value
     An `integer` between 0-100 representing the current brightness.
 
@@ -44,7 +44,7 @@ for (const monitor of ddcci.getMonitorList()) {
   Queries a monitor's contrast level.
   * #### Parameters
     * **`monitorName`**  
-      `String`. Name of monitor for which to query the contrast.
+      &emsp;`String`. Name of monitor for which to query the contrast.
   * #### Return value
     An `integer` between 0-100 representing the current contrast.
 
