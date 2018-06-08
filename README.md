@@ -9,7 +9,7 @@ npm install @hensm/ddcci
 ## Usage
 
 ````js
-const ddcci = require("ddcci");
+const ddcci = require("@hensm/ddcci");
 
 for (const monitor of ddcci.getMonitorList()) {
     console.log(`${monitor} current brightness: ${ddcci.getBrightness(monitor)}`);
