@@ -21,8 +21,8 @@ for (const monitor of ddcci.getMonitorList()) {
 
 * ### `getMonitorList()`
   Gets a list of the current connected monitors.
-  #### Return value
-  An array of `String` containing the monitor names.
+  * #### Return value
+    An array of `String` containing the monitor names.
 
 * ### `getBrightness(monitorName)`
   Queries a monitor's contrast level.
