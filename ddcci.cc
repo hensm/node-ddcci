@@ -43,41 +43,70 @@ void populateMonitorMap() {
     EnumDisplayMonitors(NULL, NULL, &monitorEnumProc
           , reinterpret_cast<LPARAM>(&monitorHandles));
 
-    for (auto const& handle : monitorHandles) {
-        MONITORINFOEX monitorInfo;
-        monitorInfo.cbSize = sizeof(MONITORINFOEX);
-        GetMonitorInfo(handle, &monitorInfo);
+    DISPLAY_DEVICE displayAdapter;
+    displayAdapter.cb = sizeof(DISPLAY_DEVICE);
 
-        DWORD numPhysicalMonitors;
-        LPPHYSICAL_MONITOR physicalMonitors = NULL;
+    DWORD adapterIndex = 0; 
+    while (EnumDisplayDevices(0, adapterIndex, &displayAdapter, 0)) {
+        DISPLAY_DEVICE displayMonitor;
+        displayMonitor.cb = sizeof(DISPLAY_DEVICE);
 
-        if (!GetNumberOfPhysicalMonitorsFromHMONITOR(handle
-              , &numPhysicalMonitors)) {
-            throw std::runtime_error("Failed to get number of physical monitors");
-            break;
+        DWORD monitorIndex = 0;
+        while (EnumDisplayDevices(displayAdapter.DeviceName, monitorIndex
+              , &displayMonitor, EDD_GET_DEVICE_INTERFACE_NAME)) {
+            if (!(displayMonitor.StateFlags & DISPLAY_DEVICE_MIRRORING_DRIVER)) {
+
+                for (auto const& handle : monitorHandles) {
+                    MONITORINFOEX monitorInfo;
+                    monitorInfo.cbSize = sizeof(MONITORINFOEX);
+                    GetMonitorInfo(handle, &monitorInfo);
+
+                    DWORD numPhysicalMonitors;
+                    LPPHYSICAL_MONITOR physicalMonitors = NULL;
+
+                    if (!GetNumberOfPhysicalMonitorsFromHMONITOR(handle
+                          , &numPhysicalMonitors)) {
+                        throw std::runtime_error("Failed to get number of physical monitors");
+                        break;
+                    }
+
+                    physicalMonitors = new PHYSICAL_MONITOR[numPhysicalMonitors];
+                    if (physicalMonitors == NULL) {
+                        throw std::runtime_error("Failed to allocate monitor array");
+                        break;
+                    }
+
+                    if (!GetPhysicalMonitorsFromHMONITOR(
+                            handle, numPhysicalMonitors, physicalMonitors)) {
+                        throw std::runtime_error("Failed to get physical monitors");
+                        break;
+                    }
+
+                    for (DWORD i = 0; i < numPhysicalMonitors; i++) {
+                        std::string monitorName =
+                                static_cast<std::string>(monitorInfo.szDevice)
+                              + "\\Monitor"
+                              + std::to_string(i);
+
+                        std::string deviceName =
+                                static_cast<std::string>(displayMonitor.DeviceName);
+
+                        if (monitorName == deviceName) {
+                            monitorMap.insert({
+                                static_cast<std::string>(displayMonitor.DeviceID)
+                              , physicalMonitors[i].hPhysicalMonitor
+                            });
+                        }
+                    }
+
+                    delete[] physicalMonitors;
+                }
+            }
+
+            monitorIndex++;
         }
 
-        physicalMonitors = new PHYSICAL_MONITOR[numPhysicalMonitors];
-        if (physicalMonitors == NULL) {
-            throw std::runtime_error("Failed to allocate monitor array");
-            break;
-        }
-
-        if (!GetPhysicalMonitorsFromHMONITOR(
-                handle, numPhysicalMonitors, physicalMonitors)) {
-            throw std::runtime_error("Failed to get physical monitors");
-            break;
-        }
-
-        std::string monitorName =
-                static_cast<std::string>(monitorInfo.szDevice);
-
-        monitorMap.insert({
-            monitorName
-          , physicalMonitors[0].hPhysicalMonitor
-        });
-
-        delete physicalMonitors;
+        adapterIndex++; 
     }
 }
 
