@@ -6,6 +6,14 @@
 npm install @hensm/ddcci
 ````
 
+On Windows, you may need to run the following commands in an Administrative shell
+
+````powershell
+npm install --global --production windows-build-tools
+SET VCTargetsPath="C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140"
+npm install @hensm/ddcci
+````
+
 ## Usage
 
 ````js
