@@ -2,6 +2,8 @@
 
 ## Installation
 
+node-ddcci is currently only supported on Windows.
+
 ````bash
 npm install @hensm/ddcci
 ````
