@@ -54,7 +54,7 @@ void populateMonitorMap() {
         DWORD monitorIndex = 0;
         while (EnumDisplayDevices(displayAdapter.DeviceName, monitorIndex
               , &displayMonitor, EDD_GET_DEVICE_INTERFACE_NAME)) {
-            if (!(displayMonitor.StateFlags & DISPLAY_DEVICE_MIRRORING_DRIVER)) {
+            if (!(displayMonitor.StateFlags & DISPLAY_DEVICE_MIRRORING_DRIVER) && (displayMonitor.StateFlags & DISPLAY_DEVICE_ATTACHED_TO_DESKTOP) && (displayMonitor.StateFlags & DISPLAY_DEVICE_ACTIVE)) {
 
                 for (auto const& handle : monitorHandles) {
                     MONITORINFOEX monitorInfo;
@@ -82,7 +82,7 @@ void populateMonitorMap() {
                         break;
                     }
 
-                    for (DWORD i = 0; i < numPhysicalMonitors; i++) {
+                    for (DWORD i = 0; i <= numPhysicalMonitors; i++) {
                         std::string monitorName =
                                 static_cast<std::string>(monitorInfo.szDevice)
                               + "\\Monitor"
@@ -94,7 +94,7 @@ void populateMonitorMap() {
                         if (monitorName == deviceName) {
                             monitorMap.insert({
                                 static_cast<std::string>(displayMonitor.DeviceID)
-                              , physicalMonitors[i].hPhysicalMonitor
+                              , physicalMonitors[0].hPhysicalMonitor
                             });
                         }
                     }
