@@ -101,7 +101,7 @@ populateHandlesMap()
                 monitorInfo.cbSize = sizeof(MONITORINFOEX);
                 GetMonitorInfo(monitor.handle, &monitorInfo);
 
-                for (size_t i = 0; i < monitor.physicalHandles.size(); i++) {
+                for (size_t i = 0; i <= monitor.physicalHandles.size(); i++) {
                     /**
                      * Re-create DISPLAY_DEVICE.DeviceName with
                      * MONITORINFOEX.szDevice and monitor index.
@@ -117,7 +117,7 @@ populateHandlesMap()
                     if (monitorName == deviceName) {
                         handles.insert(
                           { static_cast<std::string>(displayDev.DeviceID),
-                            monitor.physicalHandles[i] });
+                            monitor.physicalHandles[(monitor.physicalHandles.size() == 1 ? 0 : i)] });
 
                         break;
                     }
