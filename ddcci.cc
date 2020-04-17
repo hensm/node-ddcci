@@ -127,6 +127,31 @@ populateHandlesMap()
     }
 }
 
+
+std::string
+getLastErrorString()
+{
+    DWORD errorCode = GetLastError();
+    if (!errorCode) {
+        return std::string();
+    }
+
+    LPSTR buf = NULL;
+    DWORD size = FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER
+                                       | FORMAT_MESSAGE_FROM_SYSTEM
+                                       | FORMAT_MESSAGE_IGNORE_INSERTS,
+                               NULL,
+                               errorCode,
+                               LANG_SYSTEM_DEFAULT,
+                               (LPSTR)&buf,
+                               0,
+                               NULL);
+
+    std::string message(buf, size);
+
+    return message;
+}
+
 Napi::Value
 refresh(const Napi::CallbackInfo& info)
 {
@@ -180,7 +205,9 @@ setVCP(const Napi::CallbackInfo& info)
     }
 
     if (!SetVCPFeature(it->second, vcpCode, newValue)) {
-        throw Napi::Error::New(env, "Failed to set VCP code value");
+        throw Napi::Error::New(env,
+                               std::string("Failed to set VCP code value\n")
+                                       + getLastErrorString());
     }
 
     return env.Undefined();
@@ -209,7 +236,9 @@ getVCP(const Napi::CallbackInfo& info)
     DWORD currentValue;
     if (!GetVCPFeatureAndVCPFeatureReply(
                 it->second, vcpCode, NULL, &currentValue, NULL)) {
-        throw Napi::Error::New(env, "Failed to get VCP code value");
+        throw Napi::Error::New(env,
+                               std::string("Failed to get VCP code value\n")
+                                       + getLastErrorString());
     }
 
     return Napi::Number::New(env, static_cast<double>(currentValue));
