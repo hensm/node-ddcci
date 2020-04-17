@@ -65,9 +65,9 @@ populateHandlesMap()
             throw std::runtime_error("Failed to get physical monitors.");
         }
 
-        for (DWORD i = 0; i < numPhysicalMonitors; i++) {
+        for (DWORD i = 0; i <= numPhysicalMonitors; i++) {
             monitor.physicalHandles.push_back(
-              physicalMonitors[i].hPhysicalMonitor);
+              physicalMonitors[(numPhysicalMonitors == 1 ? 0 : i)].hPhysicalMonitor);
         }
 
         delete[] physicalMonitors;
@@ -101,7 +101,7 @@ populateHandlesMap()
                 monitorInfo.cbSize = sizeof(MONITORINFOEX);
                 GetMonitorInfo(monitor.handle, &monitorInfo);
 
-                for (size_t i = 0; i <= monitor.physicalHandles.size(); i++) {
+                for (size_t i = 0; i < monitor.physicalHandles.size(); i++) {
                     /**
                      * Re-create DISPLAY_DEVICE.DeviceName with
                      * MONITORINFOEX.szDevice and monitor index.
@@ -117,7 +117,7 @@ populateHandlesMap()
                     if (monitorName == deviceName) {
                         handles.insert(
                           { static_cast<std::string>(displayDev.DeviceID),
-                            monitor.physicalHandles[(monitor.physicalHandles.size() == 1 ? 0 : i)] });
+                            monitor.physicalHandles[i] });
 
                         break;
                     }
