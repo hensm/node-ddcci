@@ -42,7 +42,7 @@ populateHandlesMap()
 
     std::vector<struct Monitor> monitors;
     EnumDisplayMonitors(
-            NULL, NULL, monitorEnumProc, reinterpret_cast<LPARAM>(&monitors));
+      NULL, NULL, monitorEnumProc, reinterpret_cast<LPARAM>(&monitors));
 
     // Get physical monitor handles
     for (auto& monitor : monitors) {
@@ -57,17 +57,17 @@ populateHandlesMap()
         physicalMonitors = new PHYSICAL_MONITOR[numPhysicalMonitors];
         if (physicalMonitors == NULL) {
             throw std::runtime_error(
-                    "Failed to allocate physical monitor array");
+              "Failed to allocate physical monitor array");
         }
 
         if (!GetPhysicalMonitorsFromHMONITOR(
-                    monitor.handle, numPhysicalMonitors, physicalMonitors)) {
+              monitor.handle, numPhysicalMonitors, physicalMonitors)) {
             throw std::runtime_error("Failed to get physical monitors.");
         }
 
         for (DWORD i = 0; i < numPhysicalMonitors; i++) {
             monitor.physicalHandles.push_back(
-                    physicalMonitors[i].hPhysicalMonitor);
+              physicalMonitors[i].hPhysicalMonitor);
         }
 
         delete[] physicalMonitors;
@@ -107,17 +107,17 @@ populateHandlesMap()
                      * MONITORINFOEX.szDevice and monitor index.
                      */
                     std::string monitorName =
-                            static_cast<std::string>(monitorInfo.szDevice)
-                            + "\\Monitor" + std::to_string(i);
+                      static_cast<std::string>(monitorInfo.szDevice)
+                      + "\\Monitor" + std::to_string(i);
 
                     std::string deviceName =
-                            static_cast<std::string>(displayDev.DeviceName);
+                      static_cast<std::string>(displayDev.DeviceName);
 
                     // Match and store against device ID
                     if (monitorName == deviceName) {
                         handles.insert(
-                                { static_cast<std::string>(displayDev.DeviceID),
-                                  monitor.physicalHandles[i] });
+                          { static_cast<std::string>(displayDev.DeviceID),
+                            monitor.physicalHandles[i] });
 
                         break;
                     }
@@ -137,18 +137,17 @@ getLastErrorString()
     }
 
     LPSTR buf = NULL;
-    DWORD size = FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER
-                                       | FORMAT_MESSAGE_FROM_SYSTEM
-                                       | FORMAT_MESSAGE_IGNORE_INSERTS,
-                               NULL,
-                               errorCode,
-                               LANG_SYSTEM_DEFAULT,
-                               (LPSTR)&buf,
-                               0,
-                               NULL);
+    DWORD size =
+      FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM
+                      | FORMAT_MESSAGE_IGNORE_INSERTS,
+                    NULL,
+                    errorCode,
+                    LANG_SYSTEM_DEFAULT,
+                    (LPSTR)&buf,
+                    0,
+                    NULL);
 
     std::string message(buf, size);
-
     return message;
 }
 
@@ -197,7 +196,7 @@ setVCP(const Napi::CallbackInfo& info)
     std::string monitorName = info[0].As<Napi::String>().Utf8Value();
     BYTE vcpCode = static_cast<BYTE>(info[1].As<Napi::Number>().Int32Value());
     DWORD newValue =
-            static_cast<DWORD>(info[2].As<Napi::Number>().Int32Value());
+      static_cast<DWORD>(info[2].As<Napi::Number>().Int32Value());
 
     auto it = handles.find(monitorName);
     if (it == handles.end()) {
@@ -207,7 +206,7 @@ setVCP(const Napi::CallbackInfo& info)
     if (!SetVCPFeature(it->second, vcpCode, newValue)) {
         throw Napi::Error::New(env,
                                std::string("Failed to set VCP code value\n")
-                                       + getLastErrorString());
+                                 + getLastErrorString());
     }
 
     return env.Undefined();
@@ -235,10 +234,10 @@ getVCP(const Napi::CallbackInfo& info)
 
     DWORD currentValue;
     if (!GetVCPFeatureAndVCPFeatureReply(
-                it->second, vcpCode, NULL, &currentValue, NULL)) {
+          it->second, vcpCode, NULL, &currentValue, NULL)) {
         throw Napi::Error::New(env,
                                std::string("Failed to get VCP code value\n")
-                                       + getLastErrorString());
+                                 + getLastErrorString());
     }
 
     return Napi::Number::New(env, static_cast<double>(currentValue));
