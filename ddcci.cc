@@ -15,7 +15,7 @@
 std::map<std::string, HANDLE> handles;
 
 void
-populateMonitorMap()
+populateHandlesMap()
 {
     // Cleanup
     if (!handles.empty()) {
@@ -133,7 +133,7 @@ refresh(const Napi::CallbackInfo& info)
     Napi::Env env = info.Env();
 
     try {
-        populateMonitorMap();
+        populateHandlesMap();
     } catch (std::runtime_error& e) {
         throw Napi::Error::New(env, e.what());
     }
@@ -218,7 +218,6 @@ getVCP(const Napi::CallbackInfo& info)
 Napi::Object
 Init(Napi::Env env, Napi::Object exports)
 {
-
     exports.Set("getMonitorList",
                 Napi::Function::New(env, getMonitorList, "getMonitorList"));
     exports.Set("refresh", Napi::Function::New(env, refresh, "refresh"));
@@ -226,7 +225,7 @@ Init(Napi::Env env, Napi::Object exports)
     exports.Set("getVCP", Napi::Function::New(env, getVCP, "getVCP"));
 
     try {
-        populateMonitorMap();
+        populateHandlesMap();
     } catch (std::runtime_error& e) {
         throw Napi::Error::New(env, e.what());
     }
