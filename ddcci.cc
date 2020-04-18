@@ -65,9 +65,9 @@ populateHandlesMap()
             throw std::runtime_error("Failed to get physical monitors.");
         }
 
-        for (DWORD i = 0; i < numPhysicalMonitors; i++) {
+        for (DWORD i = 0; i <= numPhysicalMonitors; i++) {
             monitor.physicalHandles.push_back(
-              physicalMonitors[i].hPhysicalMonitor);
+              physicalMonitors[(numPhysicalMonitors == 1 ? 0 : i)].hPhysicalMonitor);
         }
 
         delete[] physicalMonitors;
