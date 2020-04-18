@@ -8,6 +8,13 @@ module.exports = {
   , _refresh: ddcci.refresh
   , getMonitorList: ddcci.getMonitorList
 
+  , _Capability: {
+        NONE: 1 << 0
+      , BRIGHTNESS: 1 << 1
+      , CONTRAST: 1 << 2
+    }
+  , _getCapabilities: ddcci.getCapabilities
+
 
   , getBrightness (monitor) {
         return ddcci.getVCP(monitor, 0x10);

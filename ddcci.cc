@@ -67,7 +67,8 @@ populateHandlesMap()
 
         for (DWORD i = 0; i <= numPhysicalMonitors; i++) {
             monitor.physicalHandles.push_back(
-              physicalMonitors[(numPhysicalMonitors == 1 ? 0 : i)].hPhysicalMonitor);
+              physicalMonitors[(numPhysicalMonitors == 1 ? 0 : i)]
+                .hPhysicalMonitor);
         }
 
         delete[] physicalMonitors;
@@ -243,11 +244,57 @@ getVCP(const Napi::CallbackInfo& info)
     return Napi::Number::New(env, static_cast<double>(currentValue));
 }
 
+Napi::Value
+getCapabilities(const Napi::CallbackInfo& info)
+{
+    Napi::Env env = info.Env();
+
+    if (info.Length() < 1) {
+        throw Napi::TypeError::New(env, "Not enough arguments");
+    }
+    if (!info[0].IsString()) {
+        throw Napi::TypeError::New(env, "Invalid arguments");
+    }
+
+    std::string monitorName = info[0].As<Napi::String>().Utf8Value();
+
+    auto it = handles.find(monitorName);
+    if (it == handles.end()) {
+        throw Napi::Error::New(env, "Monitor not found");
+    }
+
+    DWORD capabilities;
+    if (!GetMonitorCapabilities(it->second, &capabilities, NULL)) {
+        throw Napi::Error::New(env,
+                               std::string("Failed to get capabilities\n")
+                                 + getLastErrorString());
+    }
+
+
+    enum Capability { NONE = 1 << 0, BRIGHTNESS = 1 << 1, CONTRAST = 1 << 2 };
+
+    unsigned int flags = 0;
+    if (capabilities & MC_CAPS_NONE) {
+        flags |= Capability::NONE;
+    } else {
+        if (capabilities & MC_CAPS_BRIGHTNESS) {
+            flags |= Capability::BRIGHTNESS;
+        }
+        if (capabilities & MC_CAPS_CONTRAST) {
+            flags |= Capability::CONTRAST;
+        }
+    }
+
+    return Napi::Number::New(env, static_cast<double>(flags));
+}
+
 Napi::Object
 Init(Napi::Env env, Napi::Object exports)
 {
     exports.Set("getMonitorList",
                 Napi::Function::New(env, getMonitorList, "getMonitorList"));
+    exports.Set("getCapabilities",
+                Napi::Function::New(env, getCapabilities, "getCapabilities"));
     exports.Set("refresh", Napi::Function::New(env, refresh, "refresh"));
     exports.Set("setVCP", Napi::Function::New(env, setVCP, "setVCP"));
     exports.Set("getVCP", Napi::Function::New(env, getVCP, "getVCP"));
