@@ -233,14 +233,19 @@ getVCP(const Napi::CallbackInfo& info)
     }
 
     DWORD currentValue;
+    DWORD maxValue;
     if (!GetVCPFeatureAndVCPFeatureReply(
-          it->second, vcpCode, NULL, &currentValue, NULL)) {
+          it->second, vcpCode, NULL, &currentValue, &maxValue)) {
         throw Napi::Error::New(env,
                                std::string("Failed to get VCP code value\n")
                                  + getLastErrorString());
     }
 
-    return Napi::Number::New(env, static_cast<double>(currentValue));
+    Napi::Array ret = Napi::Array::New(env, 2);
+    ret.Set((uint32_t)0, static_cast<double>(currentValue));
+    ret.Set((uint32_t)1, static_cast<double>(maxValue));
+
+    return ret;
 }
 
 Napi::Object

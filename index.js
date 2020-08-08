@@ -10,15 +10,23 @@ module.exports = {
 
 
   , getBrightness (monitor) {
-        return ddcci.getVCP(monitor, 0x10);
+        return ddcci.getVCP(monitor, 0x10)[0];
+    }
+
+  , getMaxBrightness (monitor) {
+        return ddcci.getVCP(monitor, 0x10)[1];
     }
 
   , getContrast (monitor) {
-        return ddcci.getVCP(monitor, 0x12);
+        return ddcci.getVCP(monitor, 0x12)[0];
+    }
+
+  , getMaxContrast (monitor) {
+        return ddcci.getVCP(monitor, 0x12)[1];
     }
 
   , setBrightness (monitor, level) {
-        if (level < 0 || level > 100) {
+        if (level < 0) {
             throw RangeError("Brightness level not within valid range");
         }
 
@@ -26,7 +34,7 @@ module.exports = {
     }
 
   , setContrast (monitor, level) {
-        if (level < 0 || level > 100) {
+        if (level < 0) {
             throw RangeError("Contrast level not within valid range");
         }
 
