@@ -233,37 +233,6 @@ getVCP(const Napi::CallbackInfo& info)
     }
 
     DWORD currentValue;
-    if (!GetVCPFeatureAndVCPFeatureReply(
-          it->second, vcpCode, NULL, &currentValue, NULL)) {
-        throw Napi::Error::New(env,
-                               std::string("Failed to get VCP code value\n")
-                                 + getLastErrorString());
-    }
-
-    return Napi::Number::New(env, static_cast<double>(currentValue));
-}
-
-Napi::Value
-maxVCP(const Napi::CallbackInfo& info)
-{
-    Napi::Env env = info.Env();
-
-    if (info.Length() < 2) {
-        throw Napi::TypeError::New(env, "Not enough arguments");
-    }
-    if (!info[0].IsString() || !info[1].IsNumber()) {
-        throw Napi::TypeError::New(env, "Invalid arguments");
-    }
-
-    std::string monitorName = info[0].As<Napi::String>().Utf8Value();
-    BYTE vcpCode = static_cast<BYTE>(info[1].As<Napi::Number>().Int32Value());
-
-    auto it = handles.find(monitorName);
-    if (it == handles.end()) {
-        throw Napi::Error::New(env, "Monitor not found");
-    }
-
-    DWORD currentValue;
     DWORD maxValue;
     if (!GetVCPFeatureAndVCPFeatureReply(
           it->second, vcpCode, NULL, &currentValue, &maxValue)) {
@@ -272,7 +241,11 @@ maxVCP(const Napi::CallbackInfo& info)
                                  + getLastErrorString());
     }
 
-    return Napi::Number::New(env, static_cast<double>(maxValue));
+    Napi::Array ret = Napi::Array::New(env, 2);
+    ret.Set((uint32_t)0, static_cast<double>(currentValue));
+    ret.Set((uint32_t)1, static_cast<double>(maxValue));
+
+    return ret;
 }
 
 Napi::Object
@@ -283,7 +256,6 @@ Init(Napi::Env env, Napi::Object exports)
     exports.Set("refresh", Napi::Function::New(env, refresh, "refresh"));
     exports.Set("setVCP", Napi::Function::New(env, setVCP, "setVCP"));
     exports.Set("getVCP", Napi::Function::New(env, getVCP, "getVCP"));
-    exports.Set("maxVCP", Napi::Function::New(env, maxVCP, "maxVCP"));
 
     try {
         populateHandlesMap();
