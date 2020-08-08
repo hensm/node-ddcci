@@ -32,7 +32,15 @@ for (const monitor of ddcci.getMonitorList()) {
     * **`monitorName`**  
       &emsp;`String`. Name of monitor for which to query the brightness.
   * #### Return value
-    An `integer` between 0-100 representing the current brightness.
+    An `integer`, typically between 0-100, representing the current brightness.
+    
+* ### `getMaxBrightness(monitorName)`
+  Queries a monitor's maximum brightness level.
+  * #### Parameters
+    * **`monitorName`**  
+      &emsp;`String`. Name of monitor for which to query the brightness.
+  * #### Return value
+    An `integer`, typically between 0-100, representing the maximum brightness.
 
 * ### `setBrightness(monitorName, level)`
   Sets a monitor's brightness level.
@@ -48,7 +56,15 @@ for (const monitor of ddcci.getMonitorList()) {
     * **`monitorName`**  
       &emsp;`String`. Name of monitor for which to query the contrast.
   * #### Return value
-    An `integer` between 0-100 representing the current contrast.
+    An `integer`, typically between 0-100, representing the current contrast.
+    
+* ### `getMaxContrast(monitorName)`
+  Queries a monitor's maximum contrast level.
+  * #### Parameters
+    * **`monitorName`**  
+      &emsp;`String`. Name of monitor for which to query the contrast.
+  * #### Return value
+    An `integer`, typically between 0-100, representing the maximum contrast.
 
 * ### `setContrast(monitorName, level)`
   Sets a monitor's contrast level.
@@ -65,6 +81,8 @@ for (const monitor of ddcci.getMonitorList()) {
       &emsp;`String`. Name of monitor for which to query the VCP feature.
     * **`vcpCode`**  
       &emsp;`integer`. VCP code to query
+  * #### Return value
+    An `array` of two `integer` values in the format of `[currentValue, maxValue]`.
 
 * ### `_setVCP(monitorName, vcpCode, value)`
   Sets the value of a VCP code for a monitor.
