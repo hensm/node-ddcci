@@ -1,44 +1,49 @@
 "use strict";
 
 const ddcci = require("bindings")("ddcci");
+const vcp = require("./vcp");
 
 module.exports = {
-    _getVCP: ddcci.getVCP
+    vcp
+
+  , _getVCP: ddcci.getVCP
   , _setVCP: ddcci.setVCP
   , _refresh: ddcci.refresh
   , getMonitorList: ddcci.getMonitorList
 
+  , getVCP: ddcci.getVCP
+  , setVCP: ddcci.setVCP
 
-  , getBrightness (monitor) {
-        return ddcci.getVCP(monitor, 0x10)[0];
+  , getBrightness (monitorId) {
+        return ddcci.getVCP(monitorId, vcp.LUMINANCE)[0];
     }
 
-  , getMaxBrightness (monitor) {
-        return ddcci.getVCP(monitor, 0x10)[1];
+  , getMaxBrightness (monitorId) {
+        return ddcci.getVCP(monitorId, vcp.LUMINANCE)[1];
     }
 
-  , getContrast (monitor) {
-        return ddcci.getVCP(monitor, 0x12)[0];
+  , getContrast (monitorId) {
+        return ddcci.getVCP(monitorId, vcp.CONTRAST)[0];
     }
 
-  , getMaxContrast (monitor) {
-        return ddcci.getVCP(monitor, 0x12)[1];
+  , getMaxContrast (monitorId) {
+        return ddcci.getVCP(monitorId, vcp.CONTRAST)[1];
     }
 
-  , setBrightness (monitor, level) {
+  , setBrightness (monitorId, level) {
         if (level < 0) {
             throw RangeError("Brightness level not within valid range");
         }
 
-        ddcci.setVCP(monitor, 0x10, level);
+        ddcci.setVCP(monitorId, vcp.LUMINANCE, level);
     }
 
-  , setContrast (monitor, level) {
+  , setContrast (monitorId, level) {
         if (level < 0) {
             throw RangeError("Contrast level not within valid range");
         }
 
-        ddcci.setVCP(monitor, 0x12, level);
+        ddcci.setVCP(monitorId, vcp.CONTRAST, level);
     }
 };
 

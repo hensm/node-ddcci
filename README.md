@@ -24,75 +24,75 @@ for (const monitor of ddcci.getMonitorList()) {
 * ### `getMonitorList()`
   Gets a list of the current connected monitors.
   * #### Return value
-    An array of `String` containing the monitor names.
+    An array of `String` containing the monitor IDs.
 
-* ### `getBrightness(monitorName)`
+* ### `getBrightness(monitorId)`
   Queries a monitor's brightness level.
   * #### Parameters
-    * **`monitorName`**  
-      &emsp;`String`. Name of monitor for which to query the brightness.
+    * **`monitorId`**  
+      `String`. ID of monitor for which to query the brightness.
   * #### Return value
     An `integer`, typically between 0-100, representing the current brightness.
     
-* ### `getMaxBrightness(monitorName)`
+* ### `getMaxBrightness(monitorId)`
   Queries a monitor's maximum brightness level.
   * #### Parameters
-    * **`monitorName`**  
-      &emsp;`String`. Name of monitor for which to query the brightness.
+    * **`monitorId`**  
+      `String`. ID of monitor for which to query the brightness.
   * #### Return value
     An `integer`, typically between 0-100, representing the maximum brightness.
 
-* ### `setBrightness(monitorName, level)`
+* ### `setBrightness(monitorId, level)`
   Sets a monitor's brightness level.
   * #### Parameters
-    * **`monitorName`**  
-      &emsp;`String`. Name of monitor for which to set the brightness.
+    * **`monitorId`**  
+      `String`. ID of monitor for which to set the brightness.
     * **`level`**  
-      &emsp;`integer`. Between 0-100 representing the new brightness level.
+      `integer`. Between 0-100 representing the new brightness level.
 
-* ### `getContrast(monitorName)`
+* ### `getContrast(monitorId)`
   Queries a monitor's contrast level.
   * #### Parameters
-    * **`monitorName`**  
-      &emsp;`String`. Name of monitor for which to query the contrast.
+    * **`monitorId`**  
+      `String`. ID of monitor for which to query the contrast.
   * #### Return value
     An `integer`, typically between 0-100, representing the current contrast.
     
-* ### `getMaxContrast(monitorName)`
+* ### `getMaxContrast(monitorId)`
   Queries a monitor's maximum contrast level.
   * #### Parameters
-    * **`monitorName`**  
-      &emsp;`String`. Name of monitor for which to query the contrast.
+    * **`monitorId`**  
+      `String`. ID of monitor for which to query the contrast.
   * #### Return value
     An `integer`, typically between 0-100, representing the maximum contrast.
 
-* ### `setContrast(monitorName, level)`
+* ### `setContrast(monitorId, level)`
   Sets a monitor's contrast level.
   * #### Parameters
-    * **`monitorName`**  
-      &emsp;`String`. Name of monitor for which to set the contrast.
+    * **`monitorId`**  
+      `String`. ID of monitor for which to set the contrast.
     * **`level`**  
-      &emsp;`integer`. Between 0-100 representing the new contrast level.
+      `integer`. Between 0-100 representing the new contrast level.
 
-* ### `_getVCP(monitorName, vcpCode)`
+* ### `getVCP(monitorId, vcpCode)`
   Queries a monitor for a VCP code value.
   * #### Parameters
-    * **`monitorName`**  
-      &emsp;`String`. Name of monitor for which to query the VCP feature.
+    * **`monitorId`**  
+      `String`. ID of monitor for which to query the VCP feature.
     * **`vcpCode`**  
-      &emsp;`integer`. VCP code to query
+      `integer`. VCP code to query
   * #### Return value
     An `array` of two `integer` values in the format of `[currentValue, maxValue]`.
 
-* ### `_setVCP(monitorName, vcpCode, value)`
+* ### `setVCP(monitorId, vcpCode, value)`
   Sets the value of a VCP code for a monitor.
   * #### Parameters
-    * **`monitorName`**  
-      &emsp;`String`. Name of monitor for which to set the VCP feature.
+    * **`monitorId`**  
+      `String`. ID of monitor for which to set the VCP feature.
     * **`vcpCode`**  
-      &emsp;`integer`. VCP code to set.
+      `integer`. VCP code to set.
     * **`value`**  
-      &emsp;`integer`. Value of the VCP code.
+      `integer`. Value of the VCP code.
 
 * ### `_refresh()`
   Refreshes the monitor list.
