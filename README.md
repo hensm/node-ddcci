@@ -74,7 +74,7 @@ for (const monitor of ddcci.getMonitorList()) {
     * **`level`**  
       `integer`. Between 0-100 representing the new contrast level.
 
-* ### `getVCP(monitorId, vcpCode)`
+* ### `_getVCP(monitorId, vcpCode)`
   Queries a monitor for a VCP code value.
   * #### Parameters
     * **`monitorId`**  
@@ -84,7 +84,7 @@ for (const monitor of ddcci.getMonitorList()) {
   * #### Return value
     An `array` of two `integer` values in the format of `[currentValue, maxValue]`.
 
-* ### `setVCP(monitorId, vcpCode, value)`
+* ### `_setVCP(monitorId, vcpCode, value)`
   Sets the value of a VCP code for a monitor.
   * #### Parameters
     * **`monitorId`**  
